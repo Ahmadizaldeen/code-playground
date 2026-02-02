@@ -1,0 +1,1273 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Oracle Java SE 11 (1Z0-811) – Practice Exam (Simulation)</title>
+  <style>
+    :root {
+      --bg: #0b0f14;
+      --panel: #111823;
+      --panel2: #0f1520;
+      --text: #e7edf7;
+      --muted: #a7b3c6;
+      --accent: #4ea1ff;
+      --danger: #ff5c5c;
+      --ok: #38d47a;
+      --border: #223047;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.35;
+    }
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: linear-gradient(180deg, rgba(11,15,20,0.98), rgba(11,15,20,0.9));
+      border-bottom: 1px solid var(--border);
+      padding: 12px 16px;
+    }
+    .topbar {
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: 12px;
+      align-items: center;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .title {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+    }
+    .title h1 {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: .2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .title .sub {
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 10px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: rgba(17,24,35,0.8);
+      font-size: 12px;
+      color: var(--muted);
+      user-select: none;
+      white-space: nowrap;
+    }
+    .pill strong { color: var(--text); font-weight: 700; }
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 18px 16px 80px;
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 16px;
+    }
+    @media (max-width: 980px) {
+      .container { grid-template-columns: 1fr; }
+      .side { order: 2; }
+    }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+    }
+    .card .hd {
+      padding: 14px 14px 10px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(17,24,35,0.9), rgba(15,21,32,0.9));
+    }
+    .card .bd { padding: 14px; }
+    .metaRow {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 12px;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .qnum {
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .qnum strong { color: var(--text); }
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 12px;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      background: rgba(255,255,255,0.03);
+    }
+    .tag.multi { border-color: rgba(78,161,255,.5); color: #cfe4ff; }
+    .tag.single { border-color: rgba(167,179,198,.5); }
+    .qtext {
+      margin-top: 10px;
+      font-size: 14px;
+      white-space: pre-wrap;
+    }
+    pre.code {
+      background: var(--panel2);
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      border-radius: 12px;
+      overflow: auto;
+      margin: 10px 0 0;
+      font-size: 13px;
+      color: #d7e6ff;
+    }
+    .opts {
+      margin-top: 12px;
+      display: grid;
+      gap: 8px;
+    }
+    label.opt {
+      display: grid;
+      grid-template-columns: 18px 1fr;
+      gap: 10px;
+      align-items: start;
+      padding: 10px 10px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.02);
+      cursor: pointer;
+    }
+    label.opt:hover { border-color: rgba(78,161,255,.35); }
+    label.opt input { margin-top: 2px; }
+    .opt span {
+      font-size: 14px;
+      color: var(--text);
+    }
+    .opt.correct {
+      border-color: var(--ok);
+      background: rgba(56,212,122,.12);
+    }
+    .opt.incorrect {
+      border-color: var(--danger);
+      background: rgba(255,92,92,.10);
+    }
+    .opt .mark {
+      margin-left: 8px;
+      font-weight: bold;
+      font-size: 15px;
+    }
+    .navRow {
+      margin-top: 14px;
+      display: grid;
+      grid-template-columns: auto auto 1fr auto auto;
+      gap: 10px;
+      align-items: center;
+    }
+    button {
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.04);
+      color: var(--text);
+      padding: 10px 12px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 13px;
+    }
+    button:hover { border-color: rgba(78,161,255,.5); }
+    button.primary {
+      border-color: rgba(78,161,255,.6);
+      background: rgba(78,161,255,.15);
+    }
+    button.danger {
+      border-color: rgba(255,92,92,.6);
+      background: rgba(255,92,92,.12);
+    }
+    button:disabled {
+      opacity: .45;
+      cursor: not-allowed;
+    }
+    .flagBtn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      justify-content: center;
+    }
+    .flagDot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(167,179,198,.35);
+      border: 1px solid var(--border);
+    }
+    .flagged .flagDot { background: rgba(255,215,0,.8); border-color: rgba(255,215,0,.8); }
+    .side .bd { padding: 12px; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      gap: 6px;
+    }
+    .qbtn {
+      position: relative;
+      border-radius: 10px;
+      padding: 9px 0;
+      text-align: center;
+      font-size: 12px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.02);
+      color: var(--text);
+      cursor: pointer;
+      user-select: none;
+    }
+    .qbtn:hover { border-color: rgba(78,161,255,.5); }
+    .qbtn.current { outline: 2px solid rgba(78,161,255,.7); }
+    .qbtn.answered { background: rgba(56,212,122,.10); border-color: rgba(56,212,122,.35); }
+    
+    .qbtn.res-correct { background: rgba(56,212,122,.3) !important; border-color: var(--ok) !important; }
+    .qbtn.res-wrong { background: rgba(255,92,92,.3) !important; border-color: var(--danger) !important; }
+
+    .qbtn.flagged::after {
+      content: "★";
+      position: absolute;
+      top: -6px;
+      right: 4px;
+      font-size: 12px;
+      color: gold;
+    }
+    .sideNote {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 10px;
+    }
+    .modalWrap {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 20;
+    }
+    .modal {
+      width: min(760px, 100%);
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+    }
+    .modal .hd {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+    .modal .hd h2 {
+      margin: 0;
+      font-size: 14px;
+      letter-spacing: .2px;
+    }
+    .modal .bd { padding: 14px; color: var(--text); }
+    .resultLine { display: flex; justify-content: space-between; gap: 12px; margin: 8px 0; }
+    .bar {
+      height: 10px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .bar > div {
+      height: 100%;
+      width: 0%;
+      background: rgba(78,161,255,.75);
+    }
+    .small {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 10px;
+      white-space: pre-wrap;
+    }
+    .kbd {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 12px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.03);
+      padding: 2px 6px;
+      border-radius: 8px;
+      color: var(--text);
+    }
+
+    #startScreen {
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+    }
+    .start-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 40px;
+      max-width: 500px;
+      width: 100%;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    }
+    .start-card h2 { margin-top: 0; color: var(--accent); }
+    .start-card p { color: var(--muted); margin-bottom: 30px; }
+    .btn-start {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 16px 32px;
+      font-size: 18px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 700;
+      transition: transform 0.2s;
+    }
+    .btn-start:hover { transform: scale(1.05); }
+  </style>
+</head>
+
+<body>
+
+<div id="startScreen">
+  <div class="start-card">
+    <h2>Ready to Start?</h2>
+    <p>Oracle Java SE 11 (1Z0-811) Practice Exam<br>40 Questions • 90 Minutes</p>
+    <button class="btn-start" id="beginBtn">Start Exam</button>
+  </div>
+</div>
+
+<header>
+  <div class="topbar">
+    <div class="title">
+      <h1>Oracle Java SE 11 (1Z0-811) – Practice Exam Simulation</h1>
+      <div class="sub">40 questions • 90 minutes • single + multiple select • review + flag</div>
+    </div>
+    <div class="pill" id="timerPill">Time left: <strong id="timer">90:00</strong></div>
+    <div class="pill">Progress: <strong><span id="answeredCount">0</span>/40</strong></div>
+  </div>
+</header>
+
+<main class="container">
+  <section class="card main">
+    <div class="hd">
+      <div class="metaRow">
+        <div class="qnum"><strong id="qLabel">Question 1</strong> <span id="qType" class="tag single">Single Select</span></div>
+        <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+          <span class="tag" id="topicTag">Topic</span>
+          <button class="flagBtn" id="flagBtn" type="button">
+            <span class="flagDot"></span>
+            <span id="flagText">Flag</span>
+          </button>
+        </div>
+      </div>
+      <div class="qtext" id="qText"></div>
+      <pre class="code" id="qCode" style="display:none;"></pre>
+    </div>
+
+    <div class="bd">
+      <div class="opts" id="options"></div>
+
+      <div class="navRow">
+        <button id="prevBtn" type="button">◀ Prev</button>
+        <button id="nextBtn" type="button">Next ▶</button>
+
+        <div class="sideNote">
+          Shortcuts: <span class="kbd">←</span>/<span class="kbd">→</span> navigate • <span class="kbd">F</span> flag • <span class="kbd">R</span> review grid • <span class="kbd">S</span> submit
+        </div>
+
+        <button class="primary" id="reviewBtn" type="button">Review</button>
+        <button class="danger" id="submitBtn" type="button">Submit</button>
+      </div>
+    </div>
+  </section>
+
+  <aside class="card side" id="navigatorSide">
+    <div class="hd">
+      <div class="metaRow">
+        <div class="qnum"><strong>Question Navigator</strong></div>
+        <button id="resetBtn" type="button" title="Clears answers & restarts timer">Reset</button>
+      </div>
+    </div>
+    <div class="bd">
+      <div class="grid" id="grid"></div>
+      <div class="sideNote">
+        Green = answered • Star = flagged • Click a number to jump.
+      </div>
+    </div>
+  </aside>
+</main>
+
+<div class="modalWrap" id="modalWrap" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="hd">
+      <h2 id="modalTitle">Exam Results</h2>
+      <button id="closeModal" type="button">Close</button>
+    </div>
+    <div class="bd">
+      <div class="resultLine"><div>Score</div><div><strong id="scoreText">0%</strong></div></div>
+      <div class="bar"><div id="scoreBar"></div></div>
+      <div class="resultLine" style="margin-top:12px;"><div>Correct</div><div><strong id="correctText">0</strong> / 40</div></div>
+      <div class="resultLine"><div>Answered</div><div><strong id="answeredText">0</strong> / 40</div></div>
+      <div class="resultLine"><div>Flagged</div><div><strong id="flaggedText">0</strong></div></div>
+      <div class="small" id="resultNotes"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const QUESTIONS = [
+    { id: 1, topic: "Java Basics", type: "multi",
+      text: "Which statements about Java are correct?",
+      options: [
+        {k:"A", t:"Java source files are compiled into bytecode"},
+        {k:"B", t:"The JVM executes machine code directly"},
+        {k:"C", t:"Java is platform independent due to bytecode"},
+        {k:"D", t:"The JDK contains only the JVM"}
+      ],
+      answer: ["A","C"]
+    },
+    { id: 2, topic: "Data Types", type: "multi",
+      text: "Which are valid Java primitive types?",
+      options: [
+        {k:"A", t:"int"},
+        {k:"B", t:"String"},
+        {k:"C", t:"boolean"},
+        {k:"D", t:"Integer"}
+      ],
+      answer: ["A","C"]
+    },
+    { id: 3, topic: "Variables", type: "single",
+      text: "What is the default value of an instance variable of type int?",
+      options: [
+        {k:"A", t:"0"},
+        {k:"B", t:"null"},
+        {k:"C", t:"undefined"},
+        {k:"D", t:"Compiler error"}
+      ],
+      answer: ["A"]
+    },
+    { id: 4, topic: "Operators", type: "single",
+      text: "What is the result?",
+      code:
+`int x = 5;
+int y = x++;
+System.out.println(y);`,
+      options: [
+        {k:"A", t:"4"},
+        {k:"B", t:"5"},
+        {k:"C", t:"6"},
+        {k:"D", t:"Compiler error"}
+      ],
+      answer: ["B"]
+    },
+    { id: 5, topic: "Casting / Numeric Ops", type: "single",
+      text: "What is the result?",
+      code:
+`double d = 10 / 4;
+System.out.println(d);`,
+      options: [
+        {k:"A", t:"2.5"},
+        {k:"B", t:"2"},
+        {k:"C", t:"2.0"},
+        {k:"D", t:"Compilation fails"}
+      ],
+      answer: ["C"]
+    },
+    { id: 6, topic: "If Statement", type: "multi",
+      text: "Which statements are true about if?",
+      options: [
+        {k:"A", t:"The condition must be boolean"},
+        {k:"B", t:"Parentheses are optional"},
+        {k:"C", t:"Curly braces are optional for a single statement"},
+        {k:"D", t:"if can test numeric values directly"}
+      ],
+      answer: ["A","C"]
+    },
+    { id: 7, topic: "Switch", type: "multi",
+      text: "Which data types are allowed in a switch statement? (Choose all)",
+      options: [
+        {k:"A", t:"int"},
+        {k:"B", t:"String"},
+        {k:"C", t:"double"},
+        {k:"D", t:"enum"}
+      ],
+      answer: ["A","B","D"]
+    },
+    { id: 8, topic: "Loops", type: "single",
+      text: "What is the output?",
+      code:
+`for (int i = 0; i < 3; i++) {
+    System.out.print(i);
+}`,
+      options: [
+        {k:"A", t:"012"},
+        {k:"B", t:"123"},
+        {k:"C", t:"013"},
+        {k:"D", t:"0123"}
+      ],
+      answer: ["A"]
+    },
+    { id: 9, topic: "Loops", type: "single",
+      text: "Which statement is correct?",
+      options: [
+        {k:"A", t:"do-while executes at least once"},
+        {k:"B", t:"while executes at least once"},
+        {k:"C", t:"Both behave the same"},
+        {k:"D", t:"do-while requires a boolean literal"}
+      ],
+      answer: ["A"]
+    },
+    { id: 10, topic: "Arrays", type: "single",
+      text: "What is printed?",
+      code:
+`int[] a = new int[2];
+System.out.println(a[1]);`,
+      options: [
+        {k:"A", t:"0"},
+        {k:"B", t:"null"},
+        {k:"C", t:"Runtime exception"},
+        {k:"D", t:"Compilation error"}
+      ],
+      answer: ["A"]
+    },
+    { id: 11, topic: "Arrays", type: "single",
+      text: "What happens?",
+      code:
+`int[] a = {1, 2, 3};
+System.out.println(a[3]);`,
+      options: [
+        {k:"A", t:"Prints 3"},
+        {k:"B", t:"Prints 0"},
+        {k:"C", t:"Runtime exception"},
+        {k:"D", t:"Compilation error"}
+      ],
+      answer: ["C"]
+    },
+    { id: 12, topic: "ArrayList", type: "multi",
+      text: "Which statements about ArrayList are true?",
+      options: [
+        {k:"A", t:"It can grow dynamically"},
+        {k:"B", t:"It stores primitive types directly"},
+        {k:"C", t:"It belongs to java.util"},
+        {k:"D", t:"It has a fixed size"}
+      ],
+      answer: ["A","C"]
+    },
+    { id: 13, topic: "ArrayList", type: "single",
+      text: "What is the result?",
+      code:
+`ArrayList<Integer> list = new ArrayList<>();
+list.add(10);
+list.add(20);
+list.add(30);
+list.remove(1);
+System.out.println(list);`,
+      options: [
+        {k:"A", t:"[10, 20]"},
+        {k:"B", t:"[10, 30]"},
+        {k:"C", t:"[20, 30]"},
+        {k:"D", t:"Compilation error"}
+      ],
+      answer: ["B"]
+    },
+    { id: 14, topic: "ArrayList", type: "single",
+      text: "Which statement is correct?",
+      code:
+`Object[] o = list.toArray();`,
+      options: [
+        {k:"A", t:"The array type is Object[]"},
+        {k:"B", t:"The array type is Integer[]"},
+        {k:"C", t:"This causes a runtime exception"},
+        {k:"D", t:"This does not compile"}
+      ],
+      answer: ["A"]
+    },
+    { id: 15, topic: "Classes", type: "multi",
+      text: "Which are valid class members? (Choose all)",
+      options: [
+        {k:"A", t:"Fields"},
+        {k:"B", t:"Methods"},
+        {k:"C", t:"Constructors"},
+        {k:"D", t:"Packages"}
+      ],
+      answer: ["A","B","C"]
+    },
+    { id: 16, topic: "Constructors", type: "multi",
+      text: "Which statements are correct?",
+      options: [
+        {k:"A", t:"Constructors have no return type"},
+        {k:"B", t:"Constructors can be static"},
+        {k:"C", t:"Constructors initialize objects"},
+        {k:"D", t:"Constructors are inherited"}
+      ],
+      answer: ["A","C"]
+    },
+    { id: 17, topic: "Inheritance / Constructors", type: "single",
+      text: "What is the output?",
+      code:
+`class A {
+    A() { System.out.print("A"); }
+}
+class B extends A {
+    B() { System.out.print("B"); }
+}
+new B();`,
+      options: [
+        {k:"A", t:"A"},
+        {k:"B", t:"B"},
+        {k:"C", t:"AB"},
+        {k:"D", t:"BA"}
+      ],
+      answer: ["C"]
+    },
+    { id: 18, topic: "Methods", type: "multi",
+      text: "Which statements are correct?",
+      options: [
+        {k:"A", t:"Methods can return values"},
+        {k:"B", t:"Methods must always have parameters"},
+        {k:"C", t:"Methods define behavior"},
+        {k:"D", t:"Methods can be overloaded"}
+      ],
+      answer: ["A","C","D"]
+    },
+    { id: 19, topic: "Overloading", type: "multi",
+      text: "Which statements are true about method overloading?",
+      options: [
+        {k:"A", t:"Same name, different parameter list"},
+        {k:"B", t:"Same name, different return type only"},
+        {k:"C", t:"Overloading happens at compile time"},
+        {k:"D", t:"Overloading depends on access modifier"}
+      ],
+      answer: ["A","C"]
+    },
+    { id: 20, topic: "Math", type: "single",
+      text: "What is the result?",
+      code: `System.out.println(Math.floor(4.9));`,
+      options: [
+        {k:"A", t:"4.0"},
+        {k:"B", t:"4"},
+        {k:"C", t:"5"},
+        {k:"D", t:"5.0"}
+      ],
+      answer: ["A"]
+    },
+    { id: 21, topic: "Math", type: "single",
+      text: "What is printed?",
+      code: `System.out.println(Math.round(4.5));`,
+      options: [
+        {k:"A", t:"4"},
+        {k:"B", t:"4.0"},
+        {k:"C", t:"5"},
+        {k:"D", t:"5.0"}
+      ],
+      answer: ["C"]
+    },
+    { id: 22, topic: "Random", type: "multi",
+      text: "Which statements are correct?",
+      options: [
+        {k:"A", t:"Math.random() returns double"},
+        {k:"B", t:"Range is 0.0 ≤ value < 1.0"},
+        {k:"C", t:"Random belongs to java.lang"},
+        {k:"D", t:"Random.nextInt() returns double"}
+      ],
+      answer: ["A","B"]
+    },
+    { id: 23, topic: "String", type: "multi",
+      text: "Which create a String object? (Choose all)",
+      options: [
+        {k:"A", t:'String s = "Java";'},
+        {k:"B", t:'String s = new String("Java");'},
+        {k:"C", t:"String s = 'J';"},
+        {k:"D", t:"String s = String.valueOf(10);"}
+      ],
+      answer: ["A","B","D"]
+    },
+    { id: 24, topic: "String Immutability", type: "single",
+      text: "What is printed?",
+      code:
+`String s = "Hi";
+s.concat("!");
+System.out.println(s);`,
+      options: [
+        {k:"A", t:"Hi"},
+        {k:"B", t:"Hi!"},
+        {k:"C", t:"null"},
+        {k:"D", t:"Compilation error"}
+      ],
+      answer: ["A"]
+    },
+    { id: 25, topic: "String", type: "single",
+      text: "Which method compares content?",
+      options: [
+        {k:"A", t:"=="},
+        {k:"B", t:"equals()"},
+        {k:"C", t:"compare()"},
+        {k:"D", t:"same()"}
+      ],
+      answer: ["B"]
+    },
+    { id: 26, topic: "Exceptions", type: "single",
+      text: "Which statement is correct?",
+      options: [
+        {k:"A", t:"All exceptions are checked"},
+        {k:"B", t:"RuntimeException is unchecked"},
+        {k:"C", t:"IOException is unchecked"},
+        {k:"D", t:"Errors should be caught"}
+      ],
+      answer: ["B"]
+    },
+    { id: 27, topic: "Unchecked Exceptions", type: "single",
+      text: "What happens?",
+      code:
+`String s = null;
+System.out.println(s.length());`,
+      options: [
+        {k:"A", t:"Compilation error"},
+        {k:"B", t:"NullPointerException"},
+        {k:"C", t:"IOException"},
+        {k:"D", t:"No output"}
+      ],
+      answer: ["B"]
+    },
+    { id: 28, topic: "Checked Exceptions", type: "single",
+      text: "Which requires handling?",
+      options: [
+        {k:"A", t:"NullPointerException"},
+        {k:"B", t:"ArithmeticException"},
+        {k:"C", t:"IOException"},
+        {k:"D", t:"ArrayIndexOutOfBoundsException"}
+      ],
+      answer: ["C"]
+    },
+    { id: 29, topic: "try-catch", type: "single",
+      text: "What is printed?",
+      code:
+`try {
+    int x = 10 / 0;
+} catch (ArithmeticException e) {
+    System.out.print("A");
+} catch (Exception e) {
+    System.out.print("B");
+}`,
+      options: [
+        {k:"A", t:"A"},
+        {k:"B", t:"B"},
+        {k:"C", t:"AB"},
+        {k:"D", t:"Compilation error"}
+      ],
+      answer: ["A"]
+    },
+    { id: 30, topic: "throws", type: "single",
+      text: "Which is correct?",
+      options: [
+        {k:"A", t:"throws throws an exception"},
+        {k:"B", t:"throws declares exceptions"},
+        {k:"C", t:"throws is mandatory for unchecked exceptions"},
+        {k:"D", t:"throws is used inside method body"}
+      ],
+      answer: ["B"]
+    },
+    { id: 31, topic: "throw", type: "single",
+      text: "Which statement is correct?",
+      code: `throw new IllegalArgumentException();`,
+      options: [
+        {k:"A", t:"This throws a checked exception"},
+        {k:"B", t:"This throws an unchecked exception"},
+        {k:"C", t:"Requires try-catch always"},
+        {k:"D", t:"Causes compile-time error"}
+      ],
+      answer: ["B"]
+    },
+    { id: 32, topic: "finally", type: "multi",
+      text: "Which statement is true? (Choose all)",
+      options: [
+        {k:"A", t:"finally always executes (except in rare termination cases)"},
+        {k:"B", t:"finally executes only if exception occurs"},
+        {k:"C", t:"finally replaces catch"},
+        {k:"D", t:"finally is optional"}
+      ],
+      answer: ["A","D"]
+    },
+    { id: 33, topic: "Scope", type: "multi",
+      text: "Which variables are local? (Choose all)",
+      options: [
+        {k:"A", t:"Method parameters"},
+        {k:"B", t:"Instance variables"},
+        {k:"C", t:"Loop variables"},
+        {k:"D", t:"Static variables"}
+      ],
+      answer: ["A","C"]
+    },
+    { id: 34, topic: "Operators", type: "single",
+      text: "What is printed?",
+      code: `System.out.println(true && false);`,
+      options: [
+        {k:"A", t:"true"},
+        {k:"B", t:"false"},
+        {k:"C", t:"0"},
+        {k:"D", t:"Compilation error"}
+      ],
+      answer: ["B"]
+    },
+    { id: 35, topic: "Operators", type: "single",
+      text: "What is printed?",
+      code:
+`int x = 5;
+System.out.println(++x);`,
+      options: [
+        {k:"A", t:"5"},
+        {k:"B", t:"6"},
+        {k:"C", t:"4"},
+        {k:"D", t:"Compilation error"}
+      ],
+      answer: ["B"]
+    },
+    { id: 36, topic: "Loop Control", type: "single",
+      text: "Which keyword exits a loop immediately?",
+      options: [
+        {k:"A", t:"continue"},
+        {k:"B", t:"break"},
+        {k:"C", t:"return"},
+        {k:"D", t:"exit"}
+      ],
+      answer: ["B"]
+    },
+    { id: 37, topic: "Arrays", type: "single",
+      text: "Which is correct?",
+      options: [
+        {k:"A", t:"array.length()"},
+        {k:"B", t:"array.length"},
+        {k:"C", t:"array.size()"},
+        {k:"D", t:"array.getLength()"}
+      ],
+      answer: ["B"]
+    },
+    { id: 38, topic: "Wrappers", type: "multi",
+      text: "Which are wrapper classes? (Choose all)",
+      options: [
+        {k:"A", t:"Integer"},
+        {k:"B", t:"int"},
+        {k:"C", t:"Double"},
+        {k:"D", t:"boolean"}
+      ],
+      answer: ["A","C"]
+    },
+    { id: 39, topic: "Autoboxing", type: "single",
+      text: "Which statement is correct?",
+      code: `Integer i = 10;`,
+      options: [
+        {k:"A", t:"Autoboxing occurs"},
+        {k:"B", t:"Compilation error"},
+        {k:"C", t:"Unboxing occurs"},
+        {k:"D", t:"Runtime exception"}
+      ],
+      answer: ["A"]
+    },
+    { id: 40, topic: "Exceptions", type: "single",
+      text: "What happens if an unchecked exception is not caught?",
+      options: [
+        {k:"A", t:"JVM handles it silently"},
+        {k:"B", t:"Program terminates"},
+        {k:"C", t:"Compiler error"},
+        {k:"D", t:"finally block is skipped"}
+      ],
+      answer: ["B"]
+    },
+  ];
+
+  const LS_KEY = "oracle811_exam_state_v1";
+  let state = { idx: 0, remainingSec: 90 * 60, answers: {}, flagged: {}, startedAt: null, isSubmitted: false };
+  let timerInterval = null;
+
+  const qLabel = document.getElementById("qLabel");
+  const qType = document.getElementById("qType");
+  const topicTag = document.getElementById("topicTag");
+  const qText = document.getElementById("qText");
+  const qCode = document.getElementById("qCode");
+  const optionsEl = document.getElementById("options");
+  const prevBtn = document.getElementById("prevBtn");
+  const nextBtn = document.getElementById("nextBtn");
+  const reviewBtn = document.getElementById("reviewBtn");
+  const submitBtn = document.getElementById("submitBtn");
+  const resetBtn = document.getElementById("resetBtn");
+  const flagBtn = document.getElementById("flagBtn");
+  const flagText = document.getElementById("flagText");
+  const timerEl = document.getElementById("timer");
+  const answeredCountEl = document.getElementById("answeredCount");
+  const gridEl = document.getElementById("grid");
+  const navigatorSide = document.getElementById("navigatorSide");
+
+  const modalWrap = document.getElementById("modalWrap");
+  const closeModal = document.getElementById("closeModal");
+  const scoreText = document.getElementById("scoreText");
+  const scoreBar = document.getElementById("scoreBar");
+  const correctText = document.getElementById("correctText");
+  const answeredText = document.getElementById("answeredText");
+  const flaggedText = document.getElementById("flaggedText");
+  const resultNotes = document.getElementById("resultNotes");
+
+  const startScreen = document.getElementById("startScreen");
+  const beginBtn = document.getElementById("beginBtn");
+
+  function pad2(n){ return String(n).padStart(2,"0"); }
+  function formatTime(sec){
+    const m = Math.floor(sec / 60);
+    const s = sec % 60;
+    return `${m}:${pad2(s)}`;
+  }
+  function isAnswered(qid){
+    const a = state.answers[qid];
+    return Array.isArray(a) && a.length > 0;
+  }
+  function isFlagged(qid){ return !!state.flagged[qid]; }
+
+  function saveState(){
+    try { localStorage.setItem(LS_KEY, JSON.stringify(state)); } catch {}
+  }
+  function loadState(){
+    try {
+      const raw = localStorage.getItem(LS_KEY);
+      if (!raw) return false;
+      const parsed = JSON.parse(raw);
+      if (!parsed || typeof parsed !== "object") return false;
+      state = parsed;
+      state.idx = Math.max(0, Math.min(QUESTIONS.length - 1, state.idx|0));
+      state.remainingSec = Math.max(0, Math.min(90*60, state.remainingSec|0));
+      state.answers = state.answers || {};
+      state.flagged = state.flagged || {};
+      state.isSubmitted = !!state.isSubmitted;
+      return true;
+    } catch { return false; }
+  }
+
+  function setTagForType(type){
+    if (type === "multi"){
+      qType.textContent = "Multiple Select";
+      qType.classList.remove("single");
+      qType.classList.add("multi");
+    } else {
+      qType.textContent = "Single Select";
+      qType.classList.remove("multi");
+      qType.classList.add("single");
+    }
+  }
+
+  function renderGrid(){
+    gridEl.innerHTML = "";
+    for (let i=0;i<QUESTIONS.length;i++){
+      const q = QUESTIONS[i];
+      const b = document.createElement("div");
+      b.className = "qbtn";
+      b.textContent = q.id;
+      if (i === state.idx) b.classList.add("current");
+      
+      if (state.isSubmitted) {
+        const a = (state.answers[q.id] || []).slice().sort();
+        const key = (q.answer || []).slice().sort();
+        const isCorrect = deepEqualAnswers(a, key);
+        if (isCorrect) {
+          b.classList.add("res-correct");
+        } else {
+          b.classList.add("res-wrong");
+        }
+      } else {
+        if (isAnswered(q.id)) b.classList.add("answered");
+      }
+
+      if (isFlagged(q.id)) b.classList.add("flagged");
+      b.addEventListener("click", () => {
+        state.idx = i;
+        renderQuestion();
+      });
+      gridEl.appendChild(b);
+    }
+  }
+
+  function renderProgress(){
+    let answered = 0;
+    for (const q of QUESTIONS) if (isAnswered(q.id)) answered++;
+    answeredCountEl.textContent = answered;
+  }
+
+  function renderFlag(){
+    const qid = QUESTIONS[state.idx].id;
+    const flagged = isFlagged(qid);
+    flagBtn.classList.toggle("flagged", flagged);
+    flagText.textContent = flagged ? "Flagged" : "Flag";
+  }
+
+  function renderQuestion(){
+    const q = QUESTIONS[state.idx];
+    qLabel.textContent = `Question ${q.id}`;
+    topicTag.textContent = q.topic;
+    setTagForType(q.type);
+    qText.textContent = q.text;
+
+    if (q.code){
+      qCode.style.display = "block";
+      qCode.textContent = q.code;
+    } else {
+      qCode.style.display = "none";
+      qCode.textContent = "";
+    }
+
+    optionsEl.innerHTML = "";
+    const chosen = state.answers[q.id] || [];
+    const inputType = (q.type === "multi") ? "checkbox" : "radio";
+    const isSub = state.isSubmitted;
+
+    q.options.forEach(opt => {
+      const id = `q${q.id}_${opt.k}`;
+      const lab = document.createElement("label");
+      lab.className = "opt";
+      lab.setAttribute("for", id);
+
+      let mark = "";
+      if (isSub) {
+        const isCorrect = (q.answer || []).includes(opt.k);
+        const isChecked = chosen.includes(opt.k);
+        if (isCorrect && isChecked) {
+          lab.classList.add("correct");
+          mark = "✔";
+        } else if (!isCorrect && isChecked) {
+          lab.classList.add("incorrect");
+          mark = "✖";
+        } else if (isCorrect && !isChecked) {
+          lab.classList.add("correct");
+          mark = "✔";
+        }
+      }
+
+      const inp = document.createElement("input");
+      inp.type = inputType;
+      inp.name = `q${q.id}`;
+      inp.id = id;
+      inp.value = opt.k;
+      inp.checked = chosen.includes(opt.k);
+      inp.disabled = isSub;
+
+      if (!isSub) {
+        inp.addEventListener("change", () => {
+          if (q.type === "single"){
+            state.answers[q.id] = [opt.k];
+          } else {
+            const cur = new Set(state.answers[q.id] || []);
+            if (inp.checked) cur.add(opt.k);
+            else cur.delete(opt.k);
+            state.answers[q.id] = Array.from(cur).sort();
+          }
+          saveState();
+          renderGrid();
+          renderProgress();
+        });
+      }
+
+      const span = document.createElement("span");
+      span.textContent = `${opt.k}. ${opt.t}`;
+      if (isSub && mark) {
+        const m = document.createElement("span");
+        m.className = "mark";
+        m.textContent = mark;
+        span.appendChild(m);
+      }
+
+      lab.appendChild(inp);
+      lab.appendChild(span);
+      optionsEl.appendChild(lab);
+    });
+
+    prevBtn.disabled = state.idx === 0;
+    nextBtn.disabled = state.idx === QUESTIONS.length - 1;
+
+    renderGrid();
+    renderProgress();
+    renderFlag();
+    saveState();
+  }
+
+  function tick(){
+    if (state.remainingSec <= 0){
+      state.remainingSec = 0;
+      timerEl.textContent = formatTime(0);
+      saveState();
+      openResults(true);
+      return;
+    }
+    state.remainingSec--;
+    timerEl.textContent = formatTime(state.remainingSec);
+    saveState();
+  }
+
+  function deepEqualAnswers(a, b){
+    if (!Array.isArray(a) || !Array.isArray(b)) return false;
+    if (a.length !== b.length) return false;
+    for (let i=0;i<a.length;i++) if (a[i] !== b[i]) return false;
+    return true;
+  }
+
+  function grade(){
+    let correct = 0;
+    let answered = 0;
+    let flagged = 0;
+
+    for (const q of QUESTIONS){
+      if (isAnswered(q.id)) answered++;
+      if (isFlagged(q.id)) flagged++;
+      const a = (state.answers[q.id] || []).slice().sort();
+      const key = (q.answer || []).slice().sort();
+      if (deepEqualAnswers(a, key)) correct++;
+    }
+    const score = Math.round((correct / QUESTIONS.length) * 100);
+    return { correct, answered, flagged, score };
+  }
+
+  function openResults(auto=false){
+    state.isSubmitted = true;
+    saveState();
+    
+    const {correct, answered, flagged, score} = grade();
+    scoreText.textContent = `${score}%`;
+    scoreBar.style.width = `${score}%`;
+    correctText.textContent = String(correct);
+    answeredText.textContent = String(answered);
+    flaggedText.textContent = String(flagged);
+
+    const pass = score >= 65;
+    const notes = [];
+    notes.push(`Simulated passing threshold: ~65%`);
+    notes.push(`Result: ${pass ? "PASS" : "FAIL"}`);
+    if (auto) notes.push(`\nTime expired. Exam submitted automatically.`);
+    notes.push(`\nTip: Use flags for uncertain items and answer all questions before submitting.`);
+    resultNotes.textContent = notes.join("\n");
+
+    modalWrap.style.display = "flex";
+    modalWrap.setAttribute("aria-hidden","false");
+    if (timerInterval) clearInterval(timerInterval);
+    renderQuestion();
+  }
+
+  function closeResults(){
+    modalWrap.style.display = "none";
+    modalWrap.setAttribute("aria-hidden","true");
+    renderQuestion();
+  }
+
+  function resetAll(){
+    if (!confirm("Reset exam? This clears all answers and restarts the timer.")) return;
+    state = { idx: 0, remainingSec: 90 * 60, answers: {}, flagged: {}, startedAt: Date.now(), isSubmitted: false };
+    saveState();
+    timerEl.textContent = formatTime(state.remainingSec);
+    renderQuestion();
+    closeResults();
+    if (timerInterval) clearInterval(timerInterval);
+    timerInterval = setInterval(tick, 1000);
+  }
+
+  function startExam() {
+    startScreen.style.display = "none";
+    if (!state.startedAt) {
+      state.startedAt = Date.now();
+      saveState();
+    }
+    renderQuestion();
+    if (!state.isSubmitted && !timerInterval) timerInterval = setInterval(tick, 1000);
+  }
+
+  beginBtn.addEventListener("click", startExam);
+
+  prevBtn.addEventListener("click", () => { if (state.idx>0){ state.idx--; renderQuestion(); }});
+  nextBtn.addEventListener("click", () => { if (state.idx<QUESTIONS.length-1){ state.idx++; renderQuestion(); }});
+  
+  reviewBtn.addEventListener("click", () => {
+    navigatorSide.scrollIntoView({behavior:"smooth", block:"start"});
+  });
+
+  submitBtn.addEventListener("click", () => {
+    if (state.isSubmitted) {
+      openResults(false);
+      return;
+    }
+    const {answered} = grade();
+    const unanswered = QUESTIONS.length - answered;
+    const msg = unanswered > 0
+      ? `You have ${unanswered} unanswered question(s). Submit anyway?`
+      : "Submit exam now?";
+    if (!confirm(msg)) return;
+    openResults(false);
+  });
+
+  resetBtn.addEventListener("click", resetAll);
+
+  flagBtn.addEventListener("click", () => {
+    if (state.isSubmitted) return;
+    const qid = QUESTIONS[state.idx].id;
+    state.flagged[qid] = !state.flagged[qid];
+    saveState();
+    renderFlag();
+    renderGrid();
+  });
+
+  closeModal.addEventListener("click", closeResults);
+  modalWrap.addEventListener("click", (e) => { if (e.target === modalWrap) closeResults(); });
+
+  document.addEventListener("keydown", (e) => {
+    if (startScreen.style.display !== "none") return;
+    if (modalWrap.style.display === "flex") {
+      if (e.key === "Escape") closeResults();
+      return;
+    }
+    if (e.key === "ArrowLeft") { if (state.idx>0){ state.idx--; renderQuestion(); } }
+    if (e.key === "ArrowRight") { if (state.idx<QUESTIONS.length-1){ state.idx++; renderQuestion(); } }
+    if (e.key.toLowerCase() === "f") {
+      if (state.isSubmitted) return;
+      const qid = QUESTIONS[state.idx].id;
+      state.flagged[qid] = !state.flagged[qid];
+      saveState();
+      renderFlag();
+      renderGrid();
+    }
+    if (e.key.toLowerCase() === "r") {
+      reviewBtn.click();
+    }
+    if (e.key.toLowerCase() === "s") {
+      submitBtn.click();
+    }
+  });
+
+  const hasState = loadState();
+  timerEl.textContent = formatTime(state.remainingSec);
+  
+  if (hasState && state.startedAt) {
+    startScreen.style.display = "none";
+    renderQuestion();
+    if (!state.isSubmitted) timerInterval = setInterval(tick, 1000);
+  }
+</script>
+</body>
+</html>

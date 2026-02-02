@@ -1,0 +1,931 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Prüfungssimulation – Oracle Java Foundations (1Z0-811) – 60 Fragen</title>
+  <style>
+    :root{
+      --bg:#ffffff; --fg:#111; --muted:#666; --line:#ddd; --panel:#f7f7f7;
+      --ok:#0a7; --bad:#b00; --warn:#b70; --info:#06b;
+      --btn:#fff; --btnline:#bbb;
+    }
+    *{box-sizing:border-box}
+    body{margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; color:var(--fg); background:var(--bg);}
+    header{padding:14px 18px; border-bottom:1px solid var(--line); background:var(--bg); position:sticky; top:0; z-index:3;}
+    header .row{display:flex; gap:12px; align-items:center; justify-content:space-between; flex-wrap:wrap;}
+    h1{font-size:18px; margin:0;}
+    .sub{color:var(--muted); font-size:13px; margin-top:4px;}
+    main{display:grid; grid-template-columns: 320px 1fr; min-height: calc(100vh - 64px);}
+    aside{border-right:1px solid var(--line); background:var(--panel); padding:12px; position:sticky; top:64px; height: calc(100vh - 64px); overflow:auto;}
+    section{padding:14px 18px; overflow:auto;}
+    .card{background:var(--bg); border:1px solid var(--line); border-radius:12px; padding:14px; margin-bottom:12px;}
+    .btnbar{display:flex; gap:10px; flex-wrap:wrap;}
+    button{
+      border:1px solid var(--btnline); background:var(--btn); color:var(--fg);
+      padding:10px 12px; border-radius:10px; cursor:pointer; font-weight:600;
+    }
+    button:hover{background:#f1f1f1}
+    button.primary{border-color:#999}
+    button.danger{border-color:#c99}
+    button:disabled{opacity:.55; cursor:not-allowed}
+    .pill{display:inline-flex; gap:8px; align-items:center; border:1px solid var(--line); background:var(--bg); padding:8px 10px; border-radius:999px; font-size:13px;}
+    .stat{display:flex; gap:10px; flex-wrap:wrap;}
+    .kpi{font-size:13px; color:var(--muted)}
+    .kpi b{color:var(--fg)}
+    .grid{display:grid; grid-template-columns: repeat(5, 1fr); gap:8px;}
+    .qbtn{
+      border:1px solid var(--btnline); background:var(--bg); border-radius:10px; padding:10px 0;
+      cursor:pointer; font-weight:700;
+    }
+    .qbtn.ans{border-color:#7c7; background:#f2fff2}
+    .qbtn.flag{border-color:#fb5; background:#fff7e8}
+    .qbtn.cur{outline:2px solid #333}
+    .qbtn.bad{border-color:#f99; background:#fff2f2}
+    .legend{display:flex; gap:10px; flex-wrap:wrap; font-size:12px; color:var(--muted); margin-top:10px;}
+    .dot{width:10px; height:10px; border-radius:999px; display:inline-block; vertical-align:middle; margin-right:6px;}
+    .dot.ans{background:#7c7}
+    .dot.flag{background:#fb5}
+    .dot.cur{background:#333}
+    .dot.un{background:#bbb}
+    .qhead{display:flex; gap:12px; align-items:flex-start; justify-content:space-between; flex-wrap:wrap;}
+    .qtitle{font-size:16px; margin:0;}
+    .qmeta{color:var(--muted); font-size:13px; margin-top:4px;}
+    .mark{display:flex; gap:10px; align-items:center;}
+    .mark label{display:flex; gap:8px; align-items:center; font-weight:600;}
+    .choices{margin:10px 0 0; padding:0; list-style:none;}
+    .choices li{border:1px solid var(--line); border-radius:10px; padding:10px; margin:8px 0;}
+    .choices li:hover{background:#fafafa}
+    .choices input{transform: translateY(1px);}
+    pre{background:#f6f6f6; border:1px solid #eee; border-radius:10px; padding:10px; overflow:auto; margin:10px 0 0;}
+    code{background:#f6f6f6; border:1px solid #eee; border-radius:8px; padding:1px 6px;}
+    .footerbar{display:flex; gap:10px; flex-wrap:wrap; justify-content:space-between; align-items:center; margin-top:14px;}
+    .msg{padding:10px 12px; border-radius:10px; border:1px solid var(--line); background:var(--panel); color:var(--fg);}
+    .msg.ok{border-color:#7c7; background:#f2fff2}
+    .msg.bad{border-color:#f99; background:#fff2f2}
+    .msg.warn{border-color:#fb5; background:#fff7e8}
+    .hidden{display:none!important}
+    .center{max-width:920px; margin:0 auto; padding:22px 18px;}
+    .startcard{border:1px solid var(--line); border-radius:14px; padding:18px; background:var(--bg);}
+    .startcard h2{margin:0 0 8px; font-size:18px;}
+    .startcard ul{margin:10px 0 0 18px; color:var(--muted)}
+    .small{font-size:13px; color:var(--muted)}
+    @media (max-width: 980px){
+      main{grid-template-columns: 1fr;}
+      aside{position:relative; top:auto; height:auto; border-right:none; border-bottom:1px solid var(--line);}
+      section{height:auto;}
+      .grid{grid-template-columns: repeat(6, 1fr);}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="row">
+      <div>
+        <h1>Prüfungssimulation – Oracle Java Foundations (1Z0-811)</h1>
+        <div class="sub">60 Multiple-Choice-Fragen · 1 richtige Antwort pro Frage · Code/Output/Grenzfälle</div>
+      </div>
+      <div class="stat">
+        <div class="pill"><span>⏱</span> <span id="timer">—</span></div>
+        <div class="pill"><span>Frage</span> <b id="pos">—</b></div>
+        <div class="pill"><span>Beantwortet</span> <b id="answeredKpi">—</b></div>
+        <div class="pill"><span>Markiert</span> <b id="flaggedKpi">—</b></div>
+      </div>
+    </div>
+  </header>
+
+  <div id="startScreen" class="center">
+    <div class="startcard">
+      <h2>Start</h2>
+      <div class="small">
+        Online-Prüfungsgefühl: Navigation links, Frageanzeige rechts, Markieren/Review, Timer, Abgabe am Ende.
+      </div>
+      <ul>
+        <li>Empfohlenes Zeitlimit: <b>90 Minuten</b> (konfigurierbar nach Start).</li>
+        <li>Du kannst Fragen markieren und später in der Review-Übersicht anspringen.</li>
+        <li>Nach „Abgeben“ erhältst du Score und optional Erklärungen.</li>
+      </ul>
+      <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+        <label class="pill" style="gap:10px;">
+          Zeitlimit (Minuten):
+          <input id="minutesInput" type="number" min="10" max="240" value="90" style="width:84px; padding:6px 8px; border-radius:10px; border:1px solid var(--line);" />
+        </label>
+        <button id="btnStart" class="primary">Prüfung starten</button>
+      </div>
+      <div class="small" style="margin-top:10px;">
+        Hinweis: Diese Simulation ist kein offizielles Oracle-Produkt.
+      </div>
+    </div>
+  </div>
+
+  <main id="examUI" class="hidden">
+    <aside>
+      <div class="card">
+        <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between;">
+          <div>
+            <div class="kpi"><b>Navigation</b></div>
+            <div class="small">Klicke auf eine Nummer, um zu springen.</div>
+          </div>
+          <div class="btnbar">
+            <button id="btnReview">Review</button>
+            <button id="btnSubmit" class="danger">Abgeben</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="grid" id="navGrid"></div>
+        <div class="legend">
+          <span><span class="dot un"></span>unbeantwortet</span>
+          <span><span class="dot ans"></span>beantwortet</span>
+          <span><span class="dot flag"></span>markiert</span>
+          <span><span class="dot cur"></span>aktuell</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="kpi"><b>Status</b></div>
+        <div class="small" id="statusText">—</div>
+      </div>
+    </aside>
+
+    <section>
+      <div id="questionCard" class="card"></div>
+
+      <div class="footerbar">
+        <div class="btnbar">
+          <button id="btnPrev">Zurück</button>
+          <button id="btnNext" class="primary">Weiter</button>
+        </div>
+        <div class="btnbar">
+          <button id="btnClear">Antwort löschen</button>
+          <button id="btnToggleExplain">Erklärungen (nach Abgabe)</button>
+        </div>
+      </div>
+
+      <div id="postSubmitPanel" class="card hidden">
+        <div id="scoreBox" class="msg"></div>
+        <div class="small" style="margin-top:10px;">
+          Tipp: Nutze „Review“, um falsche Fragen (rot markiert) gezielt anzuspringen.
+        </div>
+      </div>
+
+      <div id="reviewPanel" class="card hidden"></div>
+    </section>
+  </main>
+
+  <script>
+    const QUESTIONS = [
+      { text:"Welche Aussage zu <code>main</code> ist korrekt?", choices:[
+        "main muss immer exakt <code>public static void main(String[] args)</code> heißen, sonst kompiliert es nie.",
+        "main kann überladen werden; die JVM startet aber nur eine passende Signatur.",
+        "main darf nicht <code>static</code> sein.",
+        "main muss in einer <code>interface</code>-Definition stehen."
+      ], correct:1, explain:"Die JVM sucht beim Start eine passende <code>public static void main(String[])</code>-Signatur. Overloads sind möglich, werden aber nicht als Einstieg genutzt." },
+
+      { text:"Welche Datei entsteht direkt nach erfolgreichem Kompilieren von <code>Main.java</code>?", choices:[
+        "<code>Main.jar</code>","<code>Main.class</code>","<code>Main.exe</code>","<code>Main.bytecode</code>"
+      ], correct:1, explain:"Der Java-Compiler erzeugt Bytecode-Dateien mit Endung <code>.class</code>." },
+
+      { text:"Welche Aussage zu <code>import</code> ist korrekt?", choices:[
+        "<code>import</code> lädt Klassen zur Laufzeit nach.",
+        "<code>import java.util.*;</code> importiert auch Unterpakete.",
+        "<code>import</code> ermöglicht kürzere Namen beim Kompilieren.",
+        "<code>import</code> ist nur innerhalb einer Klasse erlaubt."
+      ], correct:2, explain:"<code>import</code> ist eine Compiler-Hilfe für Namensauflösung. Unterpakete werden nicht automatisch importiert." },
+
+      { text:"Was ist korrekt zu <code>package</code>?", choices:[
+        "<code>package</code> muss immer nach den <code>import</code>-Zeilen stehen.",
+        "Eine Datei kann mehrere <code>package</code>-Deklarationen haben.",
+        "<code>package</code> muss (falls vorhanden) die erste Nicht-Kommentar-Zeile sein.",
+        "<code>package</code> ist optional, aber wenn vorhanden, muss es nach der Klassendeklaration stehen."
+      ], correct:2, explain:"Falls vorhanden, steht <code>package</code> ganz oben (nach Kommentaren/Leerzeilen)." },
+
+      { text:"Welche ist ein gültiger Java-Identifier?", choices:[
+        "<code>2value</code>","<code>_value</code>","<code>class</code>","<code>my-value</code>"
+      ], correct:1, explain:"Identifier dürfen nicht mit Ziffer beginnen, keine Bindestriche enthalten und keine Keywords sein." },
+
+      { text:"Welche Aussage über Literale ist korrekt?", choices:[
+        "<code>char c = 'ab';</code> ist gültig.",
+        "<code>int x = 1_000_000;</code> ist gültig.",
+        "<code>double d = 10,5;</code> ist gültig.",
+        "<code>boolean b = \"true\";</code> ist gültig."
+      ], correct:1, explain:"Zifferntrenner per <code>_</code> sind erlaubt. Dezimaltrennzeichen ist Punkt. Boolean-Literal ist <code>true</code>/<code>false</code>." },
+
+      { text:"Welche Zuweisung kompiliert <b>ohne Cast</b>?", choices:[
+        "<code>byte b = 200;</code>",
+        "<code>short s = 32768;</code>",
+        "<code>int i = 'A';</code>",
+        "<code>char c = -1;</code>"
+      ], correct:2, explain:"200 passt nicht in byte, 32768 nicht in short, negative Werte nicht in char. 'A' ist numerisch konvertierbar." },
+
+      { text:"Was ist die Ausgabe?", code:
+`int a = 10;
+int b = 4;
+double d = a / b;
+System.out.println(d);`, choices:["2.5","2.0","2","Compilerfehler"],
+        correct:1, explain:"<code>a/b</code> ist int-Division: 10/4 = 2; dann zu double ⇒ 2.0." },
+
+      { text:"Was ist die Ausgabe?", code:
+`double d = 10 / 4;
+System.out.println(d);`, choices:["2.5","2.0","2","Compilerfehler"],
+        correct:1, explain:"int-Division ergibt 2; Zuweisung nach double ⇒ 2.0." },
+
+      { text:"Was ist die Ausgabe?", code:
+`double d = 10 / 4.0;
+System.out.println(d);`, choices:["2.5","2.0","2","Compilerfehler"],
+        correct:0, explain:"Ein Operand ist double ⇒ Ergebnis 2.5." },
+
+      { text:"Welche Aussage ist korrekt (Autoboxing)?", choices:[
+        "<code>Integer x = null; int y = x;</code> ergibt 0.",
+        "<code>Integer x = null; int y = x;</code> wirft <code>NullPointerException</code>.",
+        "<code>Integer x = 5; x++;</code> ist Compilerfehler.",
+        "<code>int</code> kann <code>null</code> speichern."
+      ], correct:1, explain:"Unboxing von <code>null</code> führt zu <code>NullPointerException</code>." },
+
+      { text:"Was ist die Ausgabe?", code:`System.out.println((int)3.9);`, choices:["3.9","4","3","Compilerfehler"],
+        correct:2, explain:"Cast zu int schneidet Nachkommastellen ab ⇒ 3." },
+
+      { text:"Welche Aussage ist korrekt zu <code>final</code>?", choices:[
+        "<code>final</code> fixiert die Referenz; Objekt kann mutierbar sein.",
+        "<code>final</code> verhindert Garbage Collection.",
+        "<code>final</code> ist nur bei <code>static</code> möglich.",
+        "<code>final</code> ist identisch zu <code>const</code>."
+      ], correct:0, explain:"<code>final</code> bindet die Variable, nicht zwingend den Objektzustand." },
+
+      { text:"Was ist die Ausgabe?", code:
+`int x = 5;
+System.out.println(x++ + ++x);`, choices:["11","12","13","Compilerfehler"],
+        correct:1, explain:"x++ liefert 5 (x=6), ++x liefert 7 ⇒ 12." },
+
+      { text:"Was ist die Ausgabe?", code:
+`int a = 2, b = 3;
+System.out.println(a + b * 2);`, choices:["10","8","7","12"],
+        correct:1, explain:"3*2=6; 2+6=8." },
+
+      { text:"Was ist die Ausgabe?", code:
+`boolean x = false;
+boolean y = (x = true) || false;
+System.out.println(x + " " + y);`, choices:["false false","true false","true true","Compilerfehler"],
+        correct:2, explain:"x wird true, y wird true." },
+
+      { text:"Was ist die Ausgabe?", code:
+`int x = 0;
+boolean b = (x != 0) && (10 / x > 1);
+System.out.println(b);`, choices:["true","false","ArithmeticException","Compilerfehler"],
+        correct:1, explain:"Kurzschluss verhindert Division durch 0 ⇒ false." },
+
+      { text:"Was ist die Ausgabe?", code:
+`int x = 0;
+boolean b = (x != 0) & (10 / x > 1);
+System.out.println(b);`, choices:["false","true","ArithmeticException","Compilerfehler"],
+        correct:2, explain:"<code>&</code> wertet beide Seiten aus ⇒ Division durch 0 ⇒ Exception." },
+
+      { text:"Welche Aussage über <code>==</code> ist korrekt?", choices:[
+        "Bei Objekten vergleicht <code>==</code> Inhalte.",
+        "Bei primitiven Typen vergleicht <code>==</code> Referenzen.",
+        "Bei Objekten vergleicht <code>==</code> Referenzen.",
+        "<code>==</code> kann nicht für boolean verwendet werden."
+      ], correct:2, explain:"Für Objekte prüft <code>==</code> Referenzgleichheit." },
+
+      { text:"Was passiert?", code:
+`int x = 5;
+if (x > 5)
+  System.out.print("A");
+  System.out.print("B");
+else
+  System.out.print("C");`, choices:["Ausgabe: AB","Ausgabe: B","Ausgabe: BC","Compilerfehler"],
+        correct:3, explain:"Das <code>else</code> passt nicht direkt zum <code>if</code> (Statement dazwischen) ⇒ Compilerfehler." },
+
+      { text:"Was ist die Ausgabe?", code:
+`int x = 2;
+switch (x) {
+  case 1: System.out.print("A");
+  case 2: System.out.print("B");
+  case 3: System.out.print("C"); break;
+  default: System.out.print("D");
+}`, choices:["B","BC","BCD","ABC"],
+        correct:1, explain:"Fall-through ⇒ B dann C ⇒ BC." },
+
+      { text:"Welche Datentypen sind in <code>switch</code> zulässig?", choices:["long","String","float","double"],
+        correct:1, explain:"String (seit Java 7) ist zulässig; float/double und long klassisch nicht." },
+
+      { text:"Was ist die Ausgabe?", code:
+`int i = 0;
+while (i < 3) {
+  System.out.print(i);
+  i++;
+}`, choices:["012","123","0123","Endlosschleife"],
+        correct:0, explain:"i=0,1,2 ⇒ 012." },
+
+      { text:"Was ist die Ausgabe?", code:
+`int i = 3;
+do {
+  System.out.print(i);
+  i--;
+} while (i > 3);`, choices:["Keine Ausgabe","3","321","Endlosschleife"],
+        correct:1, explain:"do-while läuft einmal ⇒ 3." },
+
+      { text:"Was ist die Ausgabe?", code:
+`for (int i = 0; i < 5; i += 2) {
+  System.out.print(i);
+}`, choices:["01234","024","135","013"],
+        correct:1, explain:"i=0,2,4 ⇒ 024." },
+
+      { text:"Was ist korrekt?", choices:[
+        "<code>break</code> beendet immer das Programm.",
+        "<code>continue</code> beendet die Schleife vollständig.",
+        "<code>break</code> beendet die aktuelle Schleife oder switch.",
+        "<code>continue</code> ist nur in while erlaubt."
+      ], correct:2, explain:"break verlässt die nächste umschließende Schleife oder den switch." },
+
+      { text:"Was ist die Ausgabe?", code:
+`int[] a = new int[3];
+System.out.println(a[0]);`, choices:["null","0","Compilerfehler","ArrayIndexOutOfBoundsException"],
+        correct:1, explain:"int-Arrays sind mit 0 initialisiert." },
+
+      { text:"Was ist die Ausgabe?", code:
+`int[] a = {1, 2, 3};
+System.out.println(a.length);`, choices:["2","3","4","Compilerfehler"],
+        correct:1, explain:"length ist 3." },
+
+      { text:"Was ist die Ausgabe?", code:
+`int[] a = new int[0];
+System.out.println(a.length);`, choices:["0","1","Compilerfehler","Exception"],
+        correct:0, explain:"Arrays der Länge 0 sind erlaubt." },
+
+      { text:"Was passiert?", code:
+`int[] a = new int[2];
+System.out.println(a[2]);`, choices:["0","2","ArrayIndexOutOfBoundsException","Compilerfehler"],
+        correct:2, explain:"Index 2 ist außerhalb (0..1)." },
+
+      { text:"Welche Initialisierung ist korrekt?", choices:[
+        "<code>int[] a = new int[];</code>",
+        "<code>int a[] = new int[3]{1,2,3};</code>",
+        "<code>int[] a = {1,2,3};</code>",
+        "<code>int[] a = new int(3);</code>"
+      ], correct:2, explain:"Array-Initializer ist korrekt: <code>{...}</code>." },
+
+      { text:"Was ist die Ausgabe?", code:
+`int[] a = {1,2,3};
+int[] b = a;
+b[0] = 9;
+System.out.println(a[0]);`, choices:["1","9","0","Compilerfehler"],
+        correct:1, explain:"Beide Referenzen zeigen auf dasselbe Array." },
+
+      { text:"Was ist korrekt?", choices:[
+        "<code>ArrayList&lt;int&gt;</code> ist zulässig.",
+        "<code>ArrayList&lt;Integer&gt;</code> ist zulässig.",
+        "ArrayList kann keine Duplikate enthalten.",
+        "ArrayList hat feste Länge."
+      ], correct:1, explain:"Generics benötigen Referenztypen; ArrayList ist dynamisch und erlaubt Duplikate." },
+
+      { text:"Was ist die Ausgabe?", code:
+`import java.util.*;
+public class Main {
+  public static void main(String[] args) {
+    ArrayList<String> l = new ArrayList<>();
+    l.add("A"); l.add("B");
+    System.out.println(l.size());
+  }
+}`, choices:["0","1","2","Compilerfehler"],
+        correct:2, explain:"Zwei Elemente ⇒ size()=2." },
+
+      { text:"Was ist korrekt zu <code>remove</code> bei <code>ArrayList&lt;Integer&gt;</code>?", choices:[
+        "<code>remove(1)</code> entfernt den Wert 1.",
+        "<code>remove(1)</code> entfernt das Element an Index 1.",
+        "<code>remove(Integer.valueOf(1))</code> entfernt Index 1.",
+        "remove existiert nur in Collections."
+      ], correct:1, explain:"<code>remove(int)</code> ist Index-Entfernung. Für Wert-Entfernung: <code>remove(Object)</code>." },
+
+      { text:"Was ist die Ausgabe?", code:
+`import java.util.*;
+public class Main {
+  public static void main(String[] args) {
+    ArrayList<Integer> l = new ArrayList<>();
+    l.add(10); l.add(20); l.add(30);
+    l.remove(1);
+    System.out.println(l);
+  }
+}`, choices:["[10, 20, 30]","[10, 30]","[20, 30]","Compilerfehler"],
+        correct:1, explain:"Entfernt Index 1 ⇒ 20 ⇒ [10, 30]." },
+
+      { text:"Was ist die Ausgabe?", code:
+`import java.util.*;
+public class Main {
+  public static void main(String[] args) {
+    ArrayList<Integer> l = new ArrayList<>();
+    l.add(10); l.add(20); l.add(30);
+    l.remove(Integer.valueOf(20));
+    System.out.println(l);
+  }
+}`, choices:["[10, 20, 30]","[10, 30]","[20, 30]","Compilerfehler"],
+        correct:1, explain:"Entfernt den Wert 20 ⇒ [10, 30]." },
+
+      { text:"Voraussetzung für <code>Collections.sort(list)</code> ohne Comparator?", choices:[
+        "Serializable","Comparable","Cloneable","Nur ArrayList"
+      ], correct:1, explain:"Ohne Comparator braucht man natürliche Ordnung ⇒ Comparable." },
+
+      { text:"Welche Aussage ist korrekt (Parameterübergabe)?", choices:[
+        "Primitives by reference",
+        "Java ist pass-by-value; bei Objekten ist der Wert die Referenz",
+        "Objekte werden direkt übergeben, keine Referenz",
+        "Parameter sind unveränderlich"
+      ], correct:1, explain:"Java übergibt Werte. Bei Objekten ist der Wert eine Referenz (Kopie der Referenz)." },
+
+      { text:"Was ist die Ausgabe?", code:
+`public class Main {
+  static void f(int x) { x = 99; }
+  public static void main(String[] args) {
+    int a = 1;
+    f(a);
+    System.out.println(a);
+  }
+}`, choices:["99","1","Compilerfehler","Exception"],
+        correct:1, explain:"Primitive werden kopiert; a bleibt 1." },
+
+      { text:"Was ist die Ausgabe?", code:
+`public class Main {
+  static void f(int[] x) { x[0] = 99; }
+  public static void main(String[] args) {
+    int[] a = {1,2};
+    f(a);
+    System.out.println(a[0]);
+  }
+}`, choices:["1","2","99","Compilerfehler"],
+        correct:2, explain:"Mutation am Array ist sichtbar ⇒ 99." },
+
+      { text:"Welche Überladung ist gültig?", choices:[
+        "Nur anderer Rückgabewert",
+        "Nur anderer Parametername",
+        "Andere Parameterliste (Anzahl/Typ/Reihenfolge)",
+        "Nur anderes throws"
+      ], correct:2, explain:"Nur Parameterliste zählt." },
+
+      { text:"Was ist die Ausgabe?", code:
+`public class Main {
+  static void m(long x) { System.out.print("L"); }
+  static void m(Integer x) { System.out.print("I"); }
+  public static void main(String[] args) { m(5); }
+}`, choices:["L","I","Compilerfehler","Keine Ausgabe"],
+        correct:0, explain:"Widening (int→long) wird Boxing vorgezogen." },
+
+      { text:"Welche Aussage ist korrekt (Default-Konstruktor)?", choices:[
+        "Wird immer zusätzlich erzeugt",
+        "Wird nur erzeugt, wenn kein Konstruktor definiert ist",
+        "Konstruktoren werden vererbt",
+        "Konstruktoren werden überschrieben"
+      ], correct:1, explain:"Ohne expliziten Konstruktor erzeugt der Compiler einen parameterlosen." },
+
+      { text:"Was ist korrekt (Konstruktor)?", choices:[
+        "Darf Rückgabewert haben",
+        "Muss wie Klasse heißen",
+        "Kann static sein",
+        "Muss public sein"
+      ], correct:1, explain:"Kein Rückgabewert; Name wie Klasse; nicht static; Sichtbarkeit frei." },
+
+      { text:"Was ist die Ausgabe?", code:
+`public class Main {
+  Main() { this(1); System.out.print("A"); }
+  Main(int x) { System.out.print("B"); }
+  public static void main(String[] args) { new Main(); }
+}`, choices:["A","B","BA","AB"],
+        correct:2, explain:"this(1) druckt B, dann A ⇒ BA." },
+
+      { text:"Welche Aussage ist korrekt zu <code>Math.random()</code>?", choices:[
+        "int 0..1",
+        "double [0.0, 1.0)",
+        "double (0.0, 1.0]",
+        "immer gleiche Folge"
+      ], correct:1, explain:"Math.random liefert double in [0.0,1.0)." },
+
+      { text:"Welche Werte kann erzeugen:", code:`int x = (int)(Math.random() * 6) + 1;`, choices:[
+        "1..5","0..5","1..6","0..6"
+      ], correct:2, explain:"Cast liefert 0..5, +1 ⇒ 1..6." },
+
+      { text:"Random mit Seed:", choices:[
+        "macht kryptografisch sicher",
+        "gleicher Seed → gleiche Folge",
+        "verhindert Wiederholungen",
+        "nur bei nextInt"
+      ], correct:1, explain:"Seed macht die Folge reproduzierbar (Pseudozufall)." },
+
+      { text:"Was ist korrekt?", choices:[
+        "round(2.5)=2",
+        "floor(2.9)=2.0",
+        "ceil(2.1)=2.0",
+        "abs(Integer.MIN_VALUE) immer positiv"
+      ], correct:1, explain:"floor(2.9)=2.0; ceil(2.1)=3.0; abs(MIN_VALUE) bleibt negativ wegen Overflow." },
+
+      { text:"Was ist die Ausgabe?", code:
+`String s = "abc";
+s.concat("def");
+System.out.println(s);`, choices:["abcdef","abc","def","Compilerfehler"],
+        correct:1, explain:"String immutable; concat-Ergebnis wird verworfen." },
+
+      { text:"Was ist die Ausgabe?", code:
+`String s = "abc";
+s = s.concat("def");
+System.out.println(s);`, choices:["abcdef","abc","def","Compilerfehler"],
+        correct:0, explain:"Zuweisung übernimmt neuen String ⇒ abcdef." },
+
+      { text:"Was ist die Ausgabe?", code:
+`String a = "Hi";
+String b = "Hi";
+System.out.println(a == b);`, choices:["true","false","Compilerfehler","Exception"],
+        correct:0, explain:"String-Literale werden i. d. R. gepoolt ⇒ gleiche Referenz." },
+
+      { text:"Was ist die Ausgabe?", code:
+`String a = new String("Hi");
+String b = new String("Hi");
+System.out.println(a == b);`, choices:["true","false","Compilerfehler","Exception"],
+        correct:1, explain:"Zwei Objekte ⇒ Referenzen ungleich ⇒ false." },
+
+      { text:"Was ist die Ausgabe?", code:
+`String a = "Hi";
+String b = new String("Hi");
+System.out.println(a.equals(b));`, choices:["true","false","Compilerfehler","Exception"],
+        correct:0, explain:"equals vergleicht Inhalte ⇒ true." },
+
+      { text:"Was ist die Ausgabe?", code:
+`StringBuilder sb = new StringBuilder("a");
+sb.append("b");
+System.out.println(sb.toString());`, choices:["a","b","ab","Compilerfehler"],
+        correct:2, explain:"StringBuilder ist mutierbar ⇒ \"ab\"." },
+
+      { text:"Welche ist unchecked?", choices:["IOException","SQLException","RuntimeException","Exception"],
+        correct:2, explain:"Unchecked = RuntimeException (und Unterklassen)." },
+
+      { text:"Was passiert?", code:
+`public class Main {
+  static void f() throws java.io.IOException {
+    throw new java.io.IOException("x");
+  }
+  public static void main(String[] args) {
+    f();
+  }
+}`, choices:[
+        "läuft ohne Fehler",
+        "kompiliert nicht (main muss behandeln)",
+        "kompiliert, Laufzeit IOException",
+        "throw verboten"
+      ], correct:1, explain:"Checked Exception muss in main gefangen oder deklariert werden." },
+
+      { text:"Was ist die Ausgabe?", code:
+`public class Main {
+  public static void main(String[] args) {
+    try {
+      System.out.print("A");
+      throw new RuntimeException();
+    } catch (Exception e) {
+      System.out.print("B");
+    } finally {
+      System.out.print("C");
+    }
+  }
+}`, choices:["A","AB","ABC","AC"],
+        correct:2, explain:"A, dann catch B, finally C ⇒ ABC." },
+
+      { text:"Was passiert?", code:
+`public class Main {
+  public static void main(String[] args) {
+    int[] a = {1};
+    System.out.println(a[1]);
+  }
+}`, choices:["Ausgabe 0","ArrayIndexOutOfBoundsException","Compilerfehler","NullPointerException"],
+        correct:1, explain:"Index 1 außerhalb (nur 0 gültig) ⇒ ArrayIndexOutOfBoundsException." }
+    ];
+
+    // ====== State ======
+    let state = {
+      started:false,
+      submitted:false,
+      showExplain:false,
+      current:0,
+      answers: Array(QUESTIONS.length).fill(null),
+      flagged: Array(QUESTIONS.length).fill(false),
+      wrongAfterSubmit: Array(QUESTIONS.length).fill(false),
+      endAtMs: null,
+      timerId: null
+    };
+
+    // DOM
+    const startScreen = document.getElementById("startScreen");
+    const examUI = document.getElementById("examUI");
+    const minutesInput = document.getElementById("minutesInput");
+    const btnStart = document.getElementById("btnStart");
+
+    const navGrid = document.getElementById("navGrid");
+    const questionCard = document.getElementById("questionCard");
+    const statusText = document.getElementById("statusText");
+
+    const btnPrev = document.getElementById("btnPrev");
+    const btnNext = document.getElementById("btnNext");
+    const btnClear = document.getElementById("btnClear");
+    const btnReview = document.getElementById("btnReview");
+    const btnSubmit = document.getElementById("btnSubmit");
+    const btnToggleExplain = document.getElementById("btnToggleExplain");
+
+    const timerEl = document.getElementById("timer");
+    const posEl = document.getElementById("pos");
+    const answeredKpi = document.getElementById("answeredKpi");
+    const flaggedKpi = document.getElementById("flaggedKpi");
+
+    const postSubmitPanel = document.getElementById("postSubmitPanel");
+    const scoreBox = document.getElementById("scoreBox");
+    const reviewPanel = document.getElementById("reviewPanel");
+
+    function clamp(n, a, b){ return Math.max(a, Math.min(b, n)); }
+    function formatTime(ms){
+      const total = Math.max(0, Math.floor(ms/1000));
+      const h = Math.floor(total/3600);
+      const m = Math.floor((total%3600)/60);
+      const s = total%60;
+      const pad = (x)=>String(x).padStart(2,"0");
+      return (h>0? `${h}:${pad(m)}:${pad(s)}` : `${m}:${pad(s)}`);
+    }
+    function countAnswered(){ return state.answers.filter(v => v !== null).length; }
+    function countFlagged(){ return state.flagged.filter(Boolean).length; }
+
+    function updateHeaderKpis(){
+      posEl.textContent = `${state.current+1} / ${QUESTIONS.length}`;
+      answeredKpi.textContent = `${countAnswered()} / ${QUESTIONS.length}`;
+      flaggedKpi.textContent = `${countFlagged()} / ${QUESTIONS.length}`;
+    }
+
+    function renderNav(){
+      navGrid.innerHTML = "";
+      for(let i=0;i<QUESTIONS.length;i++){
+        const b = document.createElement("button");
+        b.className = "qbtn";
+        b.textContent = String(i+1);
+
+        const answered = state.answers[i] !== null;
+        const flagged = state.flagged[i];
+        if(answered) b.classList.add("ans");
+        if(flagged) b.classList.add("flag");
+        if(i === state.current) b.classList.add("cur");
+        if(state.submitted && state.wrongAfterSubmit[i]) b.classList.add("bad");
+
+        b.addEventListener("click", ()=>{ goTo(i); });
+        navGrid.appendChild(b);
+      }
+    }
+
+    function escapeHtml(s){
+      return s.replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;");
+    }
+
+    function renderQuestion(){
+      const q = QUESTIONS[state.current];
+      const ans = state.answers[state.current];
+
+      const head = `
+        <div class="qhead">
+          <div>
+            <h2 class="qtitle">Frage ${state.current+1}</h2>
+            <div class="qmeta">${state.submitted ? "<b>Abgegeben</b> – Navigation weiterhin möglich." : "1 richtige Antwort."}</div>
+          </div>
+          <div class="mark">
+            <label>
+              <input type="checkbox" id="flagBox" ${state.flagged[state.current] ? "checked":""}/>
+              Markieren
+            </label>
+          </div>
+        </div>
+        <div style="margin-top:10px;">${q.text}</div>
+        ${q.code ? `<pre><code>${escapeHtml(q.code)}</code></pre>` : ""}
+      `;
+
+      const choices = q.choices.map((c, idx) => {
+        const checked = (ans === idx) ? "checked" : "";
+        let extra = "";
+        if(state.submitted && state.showExplain){
+          const isCorrect = idx === q.correct;
+          const isSelected = ans === idx;
+          if(isCorrect) extra = ` <span style="font-weight:700; color:var(--ok);">(richtig)</span>`;
+          else if(isSelected && !isCorrect) extra = ` <span style="font-weight:700; color:var(--bad);">(deine Wahl)</span>`;
+        }
+        return `
+          <li>
+            <label style="display:flex; gap:10px; align-items:flex-start;">
+              <input type="radio" name="q${state.current}" value="${idx}" ${checked} ${state.submitted ? "disabled" : ""}/>
+              <span>${c}${extra}</span>
+            </label>
+          </li>
+        `;
+      }).join("");
+
+      let explainBlock = "";
+      if(state.submitted && state.showExplain){
+        explainBlock = `<div class="msg" style="margin-top:12px;">
+          <b>Erklärung:</b> ${q.explain}
+        </div>`;
+      }
+
+      questionCard.innerHTML = `
+        ${head}
+        <ul class="choices">${choices}</ul>
+        ${explainBlock}
+      `;
+
+      const flagBox = document.getElementById("flagBox");
+      flagBox.addEventListener("change", (e)=>{
+        state.flagged[state.current] = !!e.target.checked;
+        renderNav();
+        updateHeaderKpis();
+        updateStatusText();
+      });
+
+      questionCard.querySelectorAll('input[type="radio"]').forEach(r => {
+        r.addEventListener("change", (e)=>{
+          state.answers[state.current] = Number(e.target.value);
+          renderNav();
+          updateHeaderKpis();
+          updateStatusText();
+        });
+      });
+
+      btnPrev.disabled = (state.current === 0);
+      btnNext.disabled = (state.current === QUESTIONS.length - 1);
+
+      updateStatusText();
+    }
+
+    function updateStatusText(){
+      const i = state.current;
+      const a = state.answers[i] !== null ? "beantwortet" : "unbeantwortet";
+      const f = state.flagged[i] ? "markiert" : "nicht markiert";
+      let extra = "";
+      if(state.submitted){
+        extra = state.wrongAfterSubmit[i] ? " · nach Abgabe: <b>falsch</b>" : " · nach Abgabe: <b>richtig</b> (oder unbeantwortet)";
+      }
+      statusText.innerHTML = `Frage ${i+1}: <b>${a}</b> · <b>${f}</b>${extra}`;
+    }
+
+    function goTo(i){
+      state.current = clamp(i, 0, QUESTIONS.length-1);
+      updateHeaderKpis();
+      renderNav();
+      renderQuestion();
+      reviewPanel.classList.add("hidden");
+    }
+
+    function renderReview(){
+      const rows = QUESTIONS.map((q, i)=>{
+        const a = state.answers[i];
+        const answered = a !== null;
+        const flagged = state.flagged[i];
+        const cls = state.submitted && state.wrongAfterSubmit[i] ? "bad" : (answered ? "ok" : "warn");
+        const status = state.submitted
+          ? (a === null ? "unbeantwortet" : (a === q.correct ? "richtig" : "falsch"))
+          : (answered ? "beantwortet" : "unbeantwortet");
+
+        return `
+          <tr>
+            <td style="padding:8px; border-top:1px solid var(--line);"><button class="qjump" data-i="${i}">Frage ${i+1}</button></td>
+            <td style="padding:8px; border-top:1px solid var(--line);">${flagged ? "ja" : "nein"}</td>
+            <td style="padding:8px; border-top:1px solid var(--line);"><span class="msg ${cls}" style="padding:4px 8px;">${status}</span></td>
+          </tr>
+        `;
+      }).join("");
+
+      reviewPanel.innerHTML = `
+        <div style="display:flex; justify-content:space-between; gap:10px; align-items:center; flex-wrap:wrap;">
+          <div>
+            <div class="kpi"><b>Review</b></div>
+            <div class="small">Springe gezielt zu offenen/markierten Fragen.</div>
+          </div>
+          <button id="btnCloseReview">Schließen</button>
+        </div>
+        <div style="overflow:auto; margin-top:10px;">
+          <table style="width:100%; border-collapse:collapse; font-size:13px;">
+            <thead>
+              <tr>
+                <th style="text-align:left; padding:8px; border-bottom:1px solid var(--line);">Frage</th>
+                <th style="text-align:left; padding:8px; border-bottom:1px solid var(--line);">Markiert</th>
+                <th style="text-align:left; padding:8px; border-bottom:1px solid var(--line);">Status</th>
+              </tr>
+            </thead>
+            <tbody>${rows}</tbody>
+          </table>
+        </div>
+      `;
+
+      reviewPanel.classList.remove("hidden");
+
+      reviewPanel.querySelectorAll(".qjump").forEach(b=>{
+        b.addEventListener("click",(e)=>{
+          const i = Number(e.target.getAttribute("data-i"));
+          goTo(i);
+        });
+      });
+      document.getElementById("btnCloseReview").addEventListener("click", ()=>{
+        reviewPanel.classList.add("hidden");
+      });
+    }
+
+    function startTimer(minutes){
+      const durMs = minutes * 60 * 1000;
+      state.endAtMs = Date.now() + durMs;
+      timerEl.textContent = formatTime(durMs);
+
+      state.timerId = setInterval(()=>{
+        const left = state.endAtMs - Date.now();
+        timerEl.textContent = formatTime(left);
+
+        if(left <= 0){
+          clearInterval(state.timerId);
+          timerEl.textContent = "0:00";
+          if(!state.submitted){
+            submitExam(true);
+          }
+        }
+      }, 250);
+    }
+
+    function submitExam(auto=false){
+      if(state.submitted) return;
+
+      const unanswered = QUESTIONS.length - countAnswered();
+      const msg = auto
+        ? "Zeit ist abgelaufen. Die Prüfung wird jetzt automatisch abgegeben."
+        : (unanswered > 0
+            ? `Du hast noch ${unanswered} unbeantwortete Frage(n). Trotzdem abgeben?`
+            : "Abgeben und Ergebnis anzeigen?");
+
+      if(!auto){
+        const ok = confirm(msg);
+        if(!ok) return;
+      } else {
+        alert(msg);
+      }
+
+      state.submitted = true;
+      if(state.timerId) clearInterval(state.timerId);
+
+      let correct = 0;
+      for(let i=0;i<QUESTIONS.length;i++){
+        const a = state.answers[i];
+        const isCorrect = (a !== null && a === QUESTIONS[i].correct);
+        if(isCorrect) correct++;
+        state.wrongAfterSubmit[i] = (a !== null && a !== QUESTIONS[i].correct);
+      }
+
+      const percent = Math.round((correct / QUESTIONS.length) * 100);
+      const cls = percent >= 70 ? "ok" : "bad";
+      scoreBox.className = `msg ${cls}`;
+      scoreBox.innerHTML = `<b>Ergebnis:</b> ${correct} / ${QUESTIONS.length} richtig (${percent}%).`;
+
+      postSubmitPanel.classList.remove("hidden");
+      btnSubmit.disabled = true;
+
+      renderNav();
+      renderQuestion();
+      renderReview();
+      updateStatusText();
+    }
+
+    // Buttons
+    btnStart.addEventListener("click", ()=>{
+      const mins = clamp(Number(minutesInput.value || 90), 10, 240);
+
+      state.started = true;
+      startScreen.classList.add("hidden");
+      examUI.classList.remove("hidden");
+
+      renderNav();
+      goTo(0);
+      updateHeaderKpis();
+
+      startTimer(mins);
+    });
+
+    btnPrev.addEventListener("click", ()=> goTo(state.current - 1));
+    btnNext.addEventListener("click", ()=> goTo(state.current + 1));
+
+    btnClear.addEventListener("click", ()=>{
+      if(state.submitted) return;
+      state.answers[state.current] = null;
+      renderNav();
+      updateHeaderKpis();
+      renderQuestion();
+    });
+
+    btnReview.addEventListener("click", ()=>{ renderReview(); });
+
+    btnSubmit.addEventListener("click", ()=>{ submitExam(false); });
+
+    btnToggleExplain.addEventListener("click", ()=>{
+      if(!state.submitted){
+        alert("Erklärungen werden erst nach Abgabe angezeigt.");
+        return;
+      }
+      state.showExplain = !state.showExplain;
+      renderQuestion();
+    });
+
+    updateHeaderKpis();
+  </script>
+</body>
+</html>

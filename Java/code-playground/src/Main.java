@@ -2,6 +2,6 @@
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 void main() {
 
-
+    int i=1; while(i<11){ System.out.println(i); }
     }
 

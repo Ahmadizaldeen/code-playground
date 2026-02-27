@@ -1,4 +1,4 @@
-public class IfStatment {
+public class ternaereOperator {
     static int max(int a, int b, int c) {
         return a > b ? a : b > c ? b : c;
     }

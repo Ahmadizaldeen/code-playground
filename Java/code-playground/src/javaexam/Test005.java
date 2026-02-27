@@ -1,4 +1,21 @@
-package javaexam;
-
-public class Test005 {
-}
+//package javaexam;
+//
+//interface I {
+//    static void print() { System.out.println("Interface I"); }
+//}
+//class A implements I {
+//    static void print() { System.out.println("Class A"); }
+//}
+//public class Test {
+//    public static void main(String[] args) {
+//        I i = new A();
+//        i.print();
+//    }
+//}
+///*
+//
+//A) Interface I
+//B) Class A
+//C) Compilation Error
+//D) Runtime Exception
+// */

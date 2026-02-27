@@ -1,5 +1,17 @@
 public class JavaCertificationMock {
+    /*
+    FRAGE 1 – Zuweisung im ternären Operator → extra Klammern nötig
 
+FRAGE 2 – ternär mit return → nur gültig, wenn return außerhalb steht
+
+FRAGE 3,10 – verschachtelte ternäre Operatoren → Klammern zwingend für Lesbarkeit
+
+FRAGE 4,7,8 – Seiteneffekte (++) → nur ein Zweig ausgeführt
+
+FRAGE 5,9 – Typen-Fallen (int + double) → gemeinsamer Typ
+
+FRAGE 6 – absichtlich „kompiliert nicht“ → typische Prüfungsfalle
+     */
     public static void main(String[] args) {
 
         // ------------------------------

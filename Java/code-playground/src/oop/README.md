@@ -1,6 +1,6 @@
 # OOP Demo
 
-Dieses Projekt enthält Java-Beispiele zu den Themen:
+Dieses package enthält Java-Beispiele zu den Themen:
 
 - Klassen, Konstruktoren und Methoden (`Produkt.java`)
 - Interfaces und Vererbung (`VererbungUndInterfacesDemo.java`)
